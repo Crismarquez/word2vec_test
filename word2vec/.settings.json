@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/*.pyc": true,
+        "**/__pycache__": true
+    },
+    "python.pythonPath": "env/bin/python",
+    "python.lintint.pylintPath": "env/bin/pylint",
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
+}
