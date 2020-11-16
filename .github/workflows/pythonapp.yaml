@@ -31,11 +31,11 @@ jobs:
         flake8 utils
 
     - name: Run pylint
-      working directory: .
+      working-directory: .
       run: |
         pylint utils
 
     - name: Run mypy
-      working directory: .
+      working-directory: .
       run: |
         mypy utils
