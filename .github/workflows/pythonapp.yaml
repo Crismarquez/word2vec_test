@@ -26,7 +26,7 @@ jobs:
         pytest utils
 
     - name: Run flake8
-      working directory: .
+      working-directory: .
       run: |
         flake8 utils
 
