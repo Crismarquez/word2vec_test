@@ -13,3 +13,14 @@ def add_plus_one(input_variable: Union[int, float]) -> Union[int, float]:
     """
 
     return input_variable + 1
+
+
+def add_two_numbers(
+    number_1: Union[int, float],
+    number_2: Union[int, float],
+) -> Union[int, float]:
+    """
+    Adds two numbers
+    """
+
+    return number_1 + number_2

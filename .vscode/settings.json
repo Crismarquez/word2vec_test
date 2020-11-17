@@ -3,7 +3,6 @@
         "**/*.pyc": true,
         "**/__pycache__": true
     },
-    "python.pythonPath": "venv/bin/python",
     "python.linting.pylintPath": "venv/bin/pylint",
     "python.linting.mypyPath": "venv/bin/mypy",
     "python.linting.pylintEnabled": true,
@@ -11,4 +10,3 @@
     "python.linting.mypyEnabled": true,
     "python.linting.enabled": true
 }
-
