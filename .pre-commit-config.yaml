@@ -25,12 +25,12 @@ repos:
     args:
       - --rcfile=.pylintrc
 
-# pytest
-- repo: local
-  hooks:
-  - id: pytest
-    name: pytest
-    entry: venv/bin/pytest
-    language: script
-    types: [python]
-    always_run: true
+# # pytest
+# - repo: local
+#   hooks:
+#   - id: pytest
+#     name: pytest
+#     entry: venv/bin/pytest
+#     language: script
+#     types: [python]
+#     always_run: true
