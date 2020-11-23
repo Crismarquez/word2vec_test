@@ -3,7 +3,7 @@ This is the documentation for this module
 """
 
 from typing import (
-    Union,
+    Union, List
 )
 import numpy as np
 
@@ -27,7 +27,7 @@ def add_two_numbers(
     return number_1 + number_2
 
 
-def gen_vocabulary(corpus: list):
+def gen_vocabulary(corpus: List[str]) -> List[str]:
     """
     get the corpus vocabulary
 
@@ -44,7 +44,10 @@ def gen_vocabulary(corpus: list):
     return list(set(corpus))
 
 
-def gen_theta(vocabulary: list, dimension: int, seed: int = None):
+def gen_theta(vocabulary: List[str],
+              dimension: int,
+              seed: int = None
+) -> List[float]:
     """
     Generate a vector that will contain the vector representacion
     for each word, both central word and context word, the first half related
@@ -72,7 +75,7 @@ def gen_theta(vocabulary: list, dimension: int, seed: int = None):
     return np.random.uniform(-1, 1, theta_size)
 
 
-def find_index(word: str, vocabulary: list):
+def find_index(word: str, vocabulary: List[str]) -> int:
     """
     Find location of a word in the vocabulary list.
 
@@ -91,7 +94,11 @@ def find_index(word: str, vocabulary: list):
     return vocabulary.index(word)
 
 
-def find_location(word_index: int, theta: list, dimension: int, central: bool = True):
+def find_location(word_index: int,
+                  theta: List[float],
+                  dimension: int,
+                  central: bool = True
+) -> List[int]:
     """
     Find the location of a word in the theta vector in terms of start index
     and end index.
@@ -128,7 +135,11 @@ def find_location(word_index: int, theta: list, dimension: int, central: bool = 
     return [start, end]
 
 
-def find_vector(word_index: int, theta: list, dimension: int, central: bool = True):
+def find_vector(word_index: int,
+                theta: List[float],
+                dimension: int,
+                central: bool = True
+) -> List[float]:
     """
     Extract the vector representation of a word in theta vector.
 
@@ -154,10 +165,8 @@ def find_vector(word_index: int, theta: list, dimension: int, central: bool = Tr
         the vector representation in theta for word_index.
     """
     if central is True:
-        start = find_location(word_index, theta, dimension)[0]
-        end = find_location(word_index, theta, dimension)[1]
+        start, end = find_location(word_index, theta, dimension)
     else:
-        start = find_location(word_index, theta, dimension, central=False)[0]
-        end = find_location(word_index, theta, dimension, central=False)[1]
+        start, end = find_location(word_index, theta, dimension, central=False)
 
     return theta[start:end]
