@@ -2,9 +2,7 @@
 This is the documentation for this module
 """
 
-from typing import (
-    Union, List
-)
+from typing import Union, List
 import numpy as np
 
 
@@ -44,10 +42,7 @@ def gen_vocabulary(corpus: List[str]) -> List[str]:
     return list(set(corpus))
 
 
-def gen_theta(vocabulary: List[str],
-              dimension: int,
-              seed: int = None
-) -> List[float]:
+def gen_theta(vocabulary: List[str], dimension: int, seed: int = None) -> List[float]:
     """
     Generate a vector that will contain the vector representacion
     for each word, both central word and context word, the first half related
@@ -94,10 +89,8 @@ def find_index(word: str, vocabulary: List[str]) -> int:
     return vocabulary.index(word)
 
 
-def find_location(word_index: int,
-                  theta: List[float],
-                  dimension: int,
-                  central: bool = True
+def find_location(
+    word_index: int, theta: List[float], dimension: int, central: bool = True
 ) -> List[int]:
     """
     Find the location of a word in the theta vector in terms of start index
@@ -135,10 +128,8 @@ def find_location(word_index: int,
     return [start, end]
 
 
-def find_vector(word_index: int,
-                theta: List[float],
-                dimension: int,
-                central: bool = True
+def find_vector(
+    word_index: int, theta: List[float], dimension: int, central: bool = True
 ) -> List[float]:
     """
     Extract the vector representation of a word in theta vector.
