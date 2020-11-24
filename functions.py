@@ -51,7 +51,7 @@ def denom_softmax(
 
 
 def matrix_softmax(
-        vocabulary: List[str], theta: List[float], dimension: int
+        vocabulary: List[str], theta: List[float]
 ) -> List[List[float]]:
     """
     This function creates a matrix with the softmax calculation for all
@@ -64,8 +64,6 @@ def matrix_softmax(
         List of unique words in the corpus. use gen_vocabulary function.
     theta : list
         Array that contains the vector representation of words.
-    dimension : int
-        Size of dimension that have each vector representation of words.
 
     Returns
     -------
@@ -73,6 +71,7 @@ def matrix_softmax(
         Matrix with a row and column size equal to the number of words, each.
 
     """
+    dimension = len(theta) // 2 // len(vocabulary)
     denom = denom_softmax(vocabulary, theta, dimension)
     matrix = np.zeros((len(vocabulary), len(vocabulary)), "float")
     for central_w in enumerate(vocabulary):
@@ -173,7 +172,6 @@ def derivative(
     corpus: List[str],
     vocabulary: List[str],
     theta: List[float],
-    dimension: int,
     mtx_soft: List[List[float]],
     mtx_frequency: List[List[int]],
 ) -> List[float]:
@@ -191,8 +189,6 @@ def derivative(
         List of unique words in the corpus. use gen_vocabulary function.
     theta : list
         Array that contains the vector representation of words.
-    dimension : int
-        Size of dimension that have each vector representation of words.
     mtx_soft : list
         This matrix contains the value of softmax function for all combination
         central and context word, the columns refers to central words and the
@@ -208,6 +204,7 @@ def derivative(
         Vector that contains the derivativa evalated in theta.
 
     """
+    dimension = len(theta) // 2 // len(vocabulary)
     grad_theta = np.zeros_like(theta)
 
     # derivative for central words
