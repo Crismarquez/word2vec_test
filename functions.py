@@ -35,7 +35,7 @@ def denom_softmax(
         Each element contains the value of denominator to the soft-max
         function in the same order to vocabulary list.
     """
-    denom_vec = []
+    denom_vec = list()
 
     for central_w in enumerate(vocabulary):
         central_v = utils.util.find_vector(central_w[0], theta, dimension)
@@ -52,7 +52,7 @@ def denom_softmax(
 
 def matrix_softmax(
         vocabulary: List[str], theta: List[float]
-) -> List[List[float]]:
+) -> List[float]:
     """
     This function creates a matrix with the softmax calculation for all
     convination central word and context words, creates a matrix where the
@@ -91,7 +91,7 @@ def matrix_frequency(
     corpus: List[str],
     vocabulary: List[str],
     s_window: int,
-) -> List[List[int]]:
+) -> List[int]:
     """
     Calculates the frequency for each combination between central and context
     word, return a matrix where the columns refers to central words and the rows
@@ -138,7 +138,7 @@ def matrix_frequency(
 
 
 def cost_function(
-        corpus: List[str], mtx_soft: List[List[float]], mtx_frequency: List[List[int]]
+        corpus: List[str], mtx_soft: List[float], mtx_frequency: List[int]
 ) -> float:
     """
     Computes the cost function difined by skip-gram model, using the log function
@@ -172,8 +172,8 @@ def derivative(
     corpus: List[str],
     vocabulary: List[str],
     theta: List[float],
-    mtx_soft: List[List[float]],
-    mtx_frequency: List[List[int]],
+    mtx_soft: List[float],
+    mtx_frequency: List[int],
 ) -> List[float]:
     """
     Computes the derivative for the cost function difined by skip-gram model,

@@ -1,15 +1,16 @@
 """
-Test the gradient with a simple example, compares the derivative functions with
-the numerical derivative
+Show a simple example how to use the functions, also test the gradient,
+compares the derivative functions with the numerical derivative.
 """
 
+import numpy as np
 import utils.util
 import functions
-import numpy as np
+
 
 # input parameters
 corpus = ['i', 'like', 'NLP', ',',
-          'i', 'like', 'machine', 'learning',',',
+          'i', 'like', 'machine', 'learning', ',',
           'i', 'like', 'NLP', ',',
           'i', 'like', 'machine', 'learning', '.']
 DIMENSION = 3  # dimention for each word vector
