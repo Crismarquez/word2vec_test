@@ -95,7 +95,7 @@ def matrix_frequency(
     """
     Calculates the frequency for each combination between central and context
     word, return a matrix where the columns refers to central words and the rows
-    refers to context word.
+    refers to context word. Ignoring the words that not exist in vocabulary.
 
     Parameters
     ----------
@@ -116,23 +116,27 @@ def matrix_frequency(
     mtx_frequency = np.zeros((len(vocabulary), len(vocabulary)), "int")
 
     for pos_central in range(s_window, len(corpus) - s_window):
+        
+        if corpus[pos_central] in vocabulary:
 
-        central_index = utils.util.find_index(corpus[pos_central], vocabulary)
-
-        # find conexion in couple (left - right)
-        for i in range(s_window):
-            take_l = pos_central - (1 + i)  # left
-            take_r = pos_central + (1 + i)  # right
-
-            context_index = utils.util.find_index(corpus[take_l], vocabulary)
-            mtx_frequency[context_index, central_index] = (
-                mtx_frequency[context_index, central_index] + 1
-            )
-
-            context_index = utils.util.find_index(corpus[take_r], vocabulary)
-            mtx_frequency[context_index, central_index] = (
-                mtx_frequency[context_index, central_index] + 1
-            )
+            central_index = utils.util.find_index(corpus[pos_central], vocabulary)
+    
+            # find conexion in couple (left - right)
+            for i in range(s_window):
+                take_l = pos_central - (1 + i)  # left
+                take_r = pos_central + (1 + i)  # right
+                
+                if corpus[take_l] in vocabulary :
+                    context_index = utils.util.find_index(corpus[take_l], vocabulary)
+                    mtx_frequency[context_index, central_index] = (
+                        mtx_frequency[context_index, central_index] + 1
+                    )
+                
+                if corpus[take_r] in vocabulary :
+                    context_index = utils.util.find_index(corpus[take_r], vocabulary)
+                    mtx_frequency[context_index, central_index] = (
+                        mtx_frequency[context_index, central_index] + 1
+                    )
 
     return mtx_frequency
 
