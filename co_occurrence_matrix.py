@@ -19,21 +19,24 @@ import functions
 # import corpus
 text = nltk.corpus.brown.words()
 text = text + text1 + text2 + text4 + text5 + text6 + text7 + text8
-print("Size imported corpus: ", len(text))
+print("\n Size imported corpus: ", len(text))
 
 # clean corpus
+print('\n Delete stopwords given by nltk ...')
 stopwords = nltk.corpus.stopwords.words("english")
 corpus = [w.lower() for w in text if w.lower() not in stopwords]
 
 # filter vocabulary
 frequency = nltk.FreqDist(corpus)
 frequency.plot(50, cumulative=False)
-print([w for w, freq in frequency.items() if freq > 5000])
-vocabulary = [w for w, freq in frequency.items() if 30 > freq < 5000]
 
-print("Size of corpus: ", len(corpus))
+print('\n This tockens has high frequency and will be ignored: \n',
+      [w for w, freq in frequency.items() if freq > 5000])
+vocabulary = [w for w, freq in frequency.items() if 30 < freq < 5000]
+
+print("\n Size of corpus: ", len(corpus))
 print("Size of vocabulary: ", len(vocabulary))
-
+print('\n Calculating the co-occurrence matrix ...')
 S_WINDOW = 5  # width for windows
 coocur_matx = functions.matrix_frequency(corpus, vocabulary, S_WINDOW)
 
@@ -43,10 +46,12 @@ print("Frequencies obtained: ", coocur_matx.sum())
 coocur_matx = sklearn.preprocessing.normalize(coocur_matx, axis=1)
 
 
-pca = sklearn.decomposition.PCA(n_components=5)
+pca = sklearn.decomposition.PCA(n_components=10)
 pca_r = pca.fit_transform(coocur_matx)
 
 data = pd.DataFrame(pca_r, index=vocabulary)
+
+# shows samples:
 
 choose_words = [
     "man",
@@ -69,7 +74,7 @@ data_filter = data.loc[choose_words]
 hierarchy = sch.linkage(data_filter, method="ward")
 dendrogram = sch.dendrogram(hierarchy, labels=list(data_filter.index))
 
-plt.title("Dendogram")
+plt.title("Dendogram - Sample 1")
 plt.xlabel("Words")
 plt.ylabel("Euclidean distance")
 plt.show()
@@ -85,12 +90,45 @@ data_filter = data.loc[choose_words]
 hierarchy = sch.linkage(data_filter, method="ward")
 dendrogram = sch.dendrogram(hierarchy, labels=list(data_filter.index))
 
-plt.title("Dendogram")
+plt.title("Dendogram - Sample 2")
 plt.xlabel("Words")
 plt.ylabel("Euclidean distance")
 plt.show()
 
 
+choose_words = ["king", "queen", "prince", "power",
+                "gold", "water", "land", "air"]
+
+print(
+    "This words not exist in the vocabulary: ",
+    [w for w in choose_words if w not in list(data.index)],
+)
+
+data_filter = data.loc[choose_words]
+hierarchy = sch.linkage(data_filter, method="ward")
+dendrogram = sch.dendrogram(hierarchy, labels=list(data_filter.index))
+
+plt.title("Dendogram - Sample 3")
+plt.xlabel("Words")
+plt.ylabel("Euclidean distance")
+plt.show()
+
+choose_words = ["sports", "play", "ball",
+                "war", "weapon", "power"]
+
+print(
+    "This words not exist in the vocabulary: ",
+    [w for w in choose_words if w not in list(data.index)],
+)
+
+data_filter = data.loc[choose_words]
+hierarchy = sch.linkage(data_filter, method="ward")
+dendrogram = sch.dendrogram(hierarchy, labels=list(data_filter.index))
+
+plt.title("Dendogram - Sample 4")
+plt.xlabel("Words")
+plt.ylabel("Euclidean distance")
+plt.show()
 # hc = sklearn.cluster.AgglomerativeClustering(n_clusters = 2,
 #                     affinity = 'euclidean',
 #                     linkage = 'ward')
