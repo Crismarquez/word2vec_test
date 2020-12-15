@@ -2,7 +2,7 @@
 This is the documentation for this module
 """
 
-from typing import Union, List
+from typing import List
 import numpy as np
 
 

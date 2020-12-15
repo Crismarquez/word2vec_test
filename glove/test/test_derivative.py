@@ -5,7 +5,7 @@ this module uses the numerical derivative as an aproximation for the derivative.
 """
 import numpy as np
 import utils.util
-import glove.co_occurence
+import glove.co_occurrence
 import glove.cost_function
 import glove.gradient
 
@@ -105,7 +105,7 @@ def test_derivative_numeric_more_words():
     vocabulary = utils.util.gen_vocabulary(corpus)
     theta = utils.util.gen_theta(vocabulary, DIMENSION)
 
-    cooccurrence_matx = glove.co_occurence.matrix_frequency(
+    cooccurrence_matx = glove.co_occurrence.matrix_frequency(
         corpus, vocabulary, S_WINDOW
     )
 

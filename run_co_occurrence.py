@@ -16,7 +16,7 @@ import sklearn.decomposition  # for PCA
 import sklearn.cluster
 import scipy.cluster.hierarchy as sch
 
-import glove.co_occurence
+import glove.co_occurrence
 
 
 # import corpus
@@ -37,11 +37,11 @@ print("\n Size of corpus: ", len(corpus))
 print("Size of vocabulary: ", len(vocabulary))
 
 # hyperparameters
-S_WINDOW = int(input('Enter window size for context words: '))
-DIMENSION = int(input('Enter the dimension for vector representation of the words: '))
+S_WINDOW = int(input("Enter window size for context words: "))
+DIMENSION = int(input("Enter the dimension for vector representation of the words: "))
 
-print('\n Calculating the co-occurrence matrix ...')
-coocur_matx = glove.co_occurence.matrix_frequency(corpus, vocabulary, S_WINDOW)
+print("\n Calculating the co-occurrence matrix ...")
+coocur_matx = glove.co_occurrence.matrix_frequency(corpus, vocabulary, S_WINDOW)
 
 print("Frequencies obtained: ", coocur_matx.sum())
 print(" \n Size of matrix: ", coocur_matx.shape)
@@ -58,24 +58,27 @@ data = pd.DataFrame(pca_r, index=vocabulary)
 
 # shows samples:
 samples = [
-    ["man", "women", "person", "human","boy",
-     "car", "road", "motor", "speed"],
-    ["great", "good", "fine", "satisfactory",
-     "terrible", "bad", "poor"],
-    ["king", "queen", "prince", "power",
-     "gold", "water", "land", "air"],
-    ["sports", "play", "ball",
-     "war", "weapon", "power"]
+    ["man", "women", "person", "human", "boy", "car", "road", "motor", "speed"],
+    ["house", "building", "castle", "terrible", "bad", "poor"],
+    ["king", "queen", "prince", "power", "gold", "water", "land", "air"],
+    ["sports", "play", "ball", "war", "weapon", "power"],
+    ["city", "region", "country", "art", "science", "research"],
+    ["king", "queen", "prince", "man", "women", "person", "human", "boy"]
 ]
 
 print(
     "This words not exist in the vocabulary: ",
-    [word for element in samples
-     for word in element if word not in list(data.index)]
+    [word for element in samples for word in element if word not in list(data.index)],
 )
 
-tittles = ['Dendogram_sample_1', 'Dendogram_sample_2',
-           'Dendogram_sample_3', 'Dendogram_sample_4']
+tittles = [
+    "Dendogram_sample_1",
+    "Dendogram_sample_2",
+    "Dendogram_sample_3",
+    "Dendogram_sample_4",
+    "Dendogram_sample_5",
+    "Dendogram_sample_6",
+]
 
 for tittle, sample in zip(tittles, samples):
     data_filter = data.loc[sample]
@@ -85,8 +88,8 @@ for tittle, sample in zip(tittles, samples):
     plt.xlabel("Words")
     plt.ylabel("Euclidean distance")
     plt.show()
-    plt.savefig(tittle)
-    
+    # plt.savefig(tittle)
+
 
 # hc = sklearn.cluster.AgglomerativeClustering(n_clusters = 2,
 #                     affinity = 'euclidean',

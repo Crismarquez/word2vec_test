@@ -249,4 +249,3 @@ def derivative(
 
         grad_theta[start:end] = der
     return -(1 / len(corpus)) * grad_theta
-
