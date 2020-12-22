@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Dec 13 11:55:01 2020
-
-@author: Cristian Marquez
+Test cost function for glove model
 """
 import numpy as np
-import glove.co_occurence
 import glove.cost_function
 
 
@@ -41,6 +38,3 @@ def test_cost():
     f_cost = glove.cost_function.cost_glove(vocabulary, theta, cooccurrence_matx)
 
     assert cost == f_cost
-
-
-test_cost()

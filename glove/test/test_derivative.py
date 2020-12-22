@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This modele tests the gradient for the cost function in the glove model,
+This module tests the gradient for the cost function in the glove model,
 this module uses the numerical derivative as an aproximation for the derivative.
 """
 import numpy as np

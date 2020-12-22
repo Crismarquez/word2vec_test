@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Dec 11 12:09:04 2020
-
-@author: Cristian Marquez
+This module compute de co-occurrence between two words in a corpus given.
 """
-
 from typing import List
 import numpy as np
 import utils.util

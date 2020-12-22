@@ -6,7 +6,6 @@ representation of the words is obtained.
 The script creates 4 figures for some samples, where shows a hierarchical
 clasification using euclidean distanse.
 """
-
 import nltk
 import pandas as pd
 import matplotlib.pyplot as plt
