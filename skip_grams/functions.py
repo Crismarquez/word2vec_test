@@ -11,7 +11,7 @@ import utils.util
 
 
 def denom_softmax(
-    vocabulary: List[str], theta: List[float], dimension: int
+    vocabulary: List[str], theta, dimension: int
 ) -> List[float]:
     """
     Calculates the denominator corresponding to the soft-max function, that is
@@ -23,7 +23,7 @@ def denom_softmax(
     ----------
     vocabulary : list
         List of unique words in the corpus. initially use gen_vocabulary function.
-    theta : list
+    theta : numpy.array
         Array that contains the vector representation of words, initially use
         gen_theta to get this parameter.
     dimension : int
@@ -50,7 +50,7 @@ def denom_softmax(
     return denom_vec
 
 
-def matrix_softmax(vocabulary: List[str], theta: List[float]) -> List[float]:
+def matrix_softmax(vocabulary: List[str], theta):
     """
     This function creates a matrix with the softmax calculation for all
     convination central word and context words, creates a matrix where the
@@ -60,7 +60,7 @@ def matrix_softmax(vocabulary: List[str], theta: List[float]) -> List[float]:
     ----------
     vocabulary : list
         List of unique words in the corpus. use gen_vocabulary function.
-    theta : list
+    theta : numpy.array
         Array that contains the vector representation of words.
 
     Returns
@@ -89,7 +89,7 @@ def matrix_frequency(
     corpus: List[str],
     vocabulary: List[str],
     s_window: int,
-) -> List[int]:
+):
     """
     Calculates the frequency for each combination between central and context
     word, return a matrix where the columns refers to central words and the rows
@@ -106,7 +106,7 @@ def matrix_frequency(
         context words at left and two context words at right.
     Returns
     -------
-    matrix int
+    numpy.ndarray
         Matrix with row and column size equal to the number of words, each
         element represent the frequency in the corpus for the conexion central
         word (column) and context word(row).
@@ -140,7 +140,7 @@ def matrix_frequency(
 
 
 def cost_function(
-    corpus: List[str], mtx_soft: List[float], mtx_frequency: List[int]
+    corpus: List[str], mtx_soft, mtx_frequency
 ) -> float:
     """
     Computes the cost function difined by skip-gram model, using the log function
@@ -152,11 +152,11 @@ def cost_function(
     ----------
     corpus : list
         This list contains the tokenized corpus.
-    matrix_soft : list
+    matrix_soft : numpy.ndarray
         This matrix contains the value of softmax function for all combination
         central and context word, the columns refers to central words and the
         rows refers to context word.
-    matrix_frequency: list
+    matrix_frequency: numpy.ndarray
         This matrix contains the frequency for each combination in the corpus
         between central and context word, a matrix where the columns refers to
         central words and the rows refers to context word.
@@ -173,10 +173,10 @@ def cost_function(
 def derivative(
     corpus: List[str],
     vocabulary: List[str],
-    theta: List[float],
-    mtx_soft: List[float],
-    mtx_frequency: List[int],
-) -> List[float]:
+    theta,
+    mtx_soft,
+    mtx_frequency,
+):
     """
     Computes the derivative for the cost function difined by skip-gram model,
     first calculate the derivative for the central words and then for the
@@ -189,20 +189,20 @@ def derivative(
         This list contains the tokenized corpus.
     vocabulary : list
         List of unique words in the corpus. use gen_vocabulary function.
-    theta : list
+    theta : numpy.array
         Array that contains the vector representation of words.
-    mtx_soft : list
+    mtx_soft : numpy.ndarray
         This matrix contains the value of softmax function for all combination
         central and context word, the columns refers to central words and the
         rows refers to context word.
-    mtx_frequency: list
+    mtx_frequency: numpy.ndarray
         This matrix contains the frequency for each combination in the corpus
         between central and context word, a matrix where the columns refers to
         central words and the rows refers to context word.
 
     Returns
     -------
-    nd.array
+    numpy.array
         Vector that contains the derivativa evalated in theta.
 
     """
@@ -248,4 +248,4 @@ def derivative(
             )
 
         grad_theta[start:end] = der
-    return -(1 / len(corpus)) * grad_theta
+    return -(1 / len(corpus)) *  grad_theta

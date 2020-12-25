@@ -7,11 +7,70 @@ import numpy as np
 import utils.util
 
 
+def cooccurrences(
+    corpus: List[str],
+    vocabulary: List[str],
+    s_window: int
+) -> dict:
+    '''
+    Calculates the frequency for each combination between central and context
+    word, return a dictionary where the first elment of key refers to central words
+    and the second one elment refers to context word.
+    Ignoring the words that not exist in vocabulary.
+
+    Parameters
+    ----------
+    corpus : List[str]
+        This list contains the tokenized corpus.
+    vocabulary : List[str]
+        List of unique words in the corpus. use gen_vocabulary function.
+    s_window : int
+        Size of window to take the context words, e.g. s_window = 2, take two
+        context words at left and two context words at right.
+
+    Returns
+    -------
+    co_occurrences : dict
+        Dictionary, the keys are tuples of two elements where the first elment
+        of key refers to central words and the second one refers to context word.
+
+    '''
+    co_occurrences = {}
+
+    for pos_central in range(s_window, len(corpus) - s_window):
+
+        central_word = corpus[pos_central]
+        if central_word in vocabulary:
+
+            # find conexion in couple (left - right)
+            for i in range(s_window):
+                context_word_l = corpus[pos_central - (1 + i)]  # left
+                context_word_r = corpus[pos_central + (1 + i)]  # right
+
+                if context_word_l in vocabulary:
+                    query = co_occurrences.get((central_word, context_word_l))
+
+                    if query:
+                        co_occurrences[(central_word, context_word_l)] += 1
+                    else:
+                        co_occurrences[(central_word, context_word_l)] = 1
+
+                if context_word_r in vocabulary:
+                    query = co_occurrences.get((central_word, context_word_r))
+
+                    if query:
+                        co_occurrences[(central_word, context_word_r)] += 1
+                    else:
+                        co_occurrences[(central_word, context_word_r)] = 1
+
+    return co_occurrences
+
+
 def matrix_frequency(
     corpus: List[str],
     vocabulary: List[str],
     s_window: int,
-) -> List[int]:
+):
     """
     Calculates the frequency for each combination between central and context
     word, return a matrix where the columns refers to central words and the rows
@@ -19,16 +78,16 @@ def matrix_frequency(
 
     Parameters
     ----------
-    corpus : list
+    corpus : List[str]
         This list contains the tokenized corpus.
-    vocabulary : list
+    vocabulary : List[str]
         List of unique words in the corpus. use gen_vocabulary function.
     s_window : int
         Size of window to take the context words, e.g. s_window = 2, take two
         context words at left and two context words at right.
     Returns
     -------
-    matrix int
+    matrix numpy.ndarray
         Matrix with row and column size equal to the number of words, each
         element represent the frequency in the corpus for the conexion central
         word (column) and context word(row).

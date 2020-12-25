@@ -4,8 +4,8 @@ This modele tests the gradient for the cost function in the skip-gram model,
 this module uses the numerical derivative as an aproximation for the derivative.
 """
 import numpy as np
-from ..utils import util
-from .. import functions
+import utils.util
+import skip_grams.functions
 
 
 def test_derivative_numeric():
@@ -43,18 +43,18 @@ def test_derivative_numeric():
     s_window = 3  # width for windows
 
     # initial components
-    vocabulary = util.gen_vocabulary(corpus)
+    vocabulary = utils.util.gen_vocabulary(corpus)
     vocabulary = ["i", "like"]
-    theta = util.gen_theta(vocabulary, dimension)
+    theta = utils.util.gen_theta(vocabulary, dimension)
 
-    matrix_frequency = functions.matrix_frequency(
+    matrix_frequency = skip_grams.functions.matrix_frequency(
         corpus, vocabulary, s_window
     )
 
-    matrix_soft = functions.matrix_softmax(vocabulary, theta)
+    matrix_soft = skip_grams.functions.matrix_softmax(vocabulary, theta)
 
-    f_z = functions.cost_function(corpus, matrix_soft, matrix_frequency)
-    df_actual = functions.derivative(
+    f_z = skip_grams.functions.cost_function(corpus, matrix_soft, matrix_frequency)
+    df_actual = skip_grams.functions.derivative(
         corpus, vocabulary, theta, matrix_soft, matrix_frequency
     )
 
@@ -65,8 +65,8 @@ def test_derivative_numeric():
         h = np.zeros_like(theta)
         choice = np.random.choice(np.arange(len(theta)))
         h[choice] = 0.00001
-        matrix_soft = functions.matrix_softmax(vocabulary, theta + h)
-        f_zh = functions.cost_function(corpus, matrix_soft, matrix_frequency)
+        matrix_soft = skip_grams.functions.matrix_softmax(vocabulary, theta + h)
+        f_zh = skip_grams.functions.cost_function(corpus, matrix_soft, matrix_frequency)
 
         df_approx = (f_zh - f_z) / h[choice]
 
@@ -74,8 +74,3 @@ def test_derivative_numeric():
         print(abs(df_actual[choice] - df_approx))
 
         count += 1
-
-
-test_derivative_numeric()
-
-5 / 'platzi'
