@@ -36,7 +36,7 @@ def gradient_descent_dict(
 
     """
 
-    grad_theta = grad_theta = np.zeros_like(theta)
+    grad_theta = np.zeros_like(theta)
     dimension = len(theta) // 2 // len(vocabulary)
     FACTOR = 10
     for central_word, context_word in co_occurrences.keys():
@@ -67,6 +67,8 @@ def gradient_descent_dict(
             (2 * glove.cost_function.sigmoid(P_ij, FACTOR) - 1)
             * context_vector
             * (dot_product - np.log(P_ij))
+            
+            
         )
 
         grad_theta[central_start:central_end] = (

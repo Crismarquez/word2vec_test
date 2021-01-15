@@ -5,6 +5,7 @@ words in the vocabulary.
 """
 #import time
 import re
+import pickle
 
 import pandas as pd
 import nltk
@@ -18,30 +19,27 @@ import glove.gradient
 
 
 # import corpus
-# texts = nltk.corpus.brown.words()
-# texts = texts + nltk.corpus.gutenberg.words()
-
-ds = textacy.datasets.Wikipedia(lang="en", version="current")
+ds = textacy.datasets.Wikipedia(lang="es", version="current")
 ds.download()
 ds.info
 
 texts = []
-for text in ds.texts(limit=6000):
+for text in ds.texts(limit=12000):
     texts = texts + re.compile(r'\W+', re.UNICODE).split(text)
-
 
 print("\n Size imported corpus, tockens: ", len(texts))
 
 # clean corpus
 corpus = [w.lower() for w in texts]
 
+
 # hyperparameters
-DIMENSION = 10  # size of word vectors
+DIMENSION = 50  # size of word vectors
 S_WINDOW = 5  # width for windows
 
 # filter vocabulary
 frequency = nltk.FreqDist(corpus)
-vocabulary = [w for w, freq in frequency.items() if freq > 50]
+vocabulary = [w for w, freq in frequency.items() if freq > 20]
 
 theta = utils.util.gen_theta(vocabulary, DIMENSION, seed=123)
 
@@ -50,21 +48,36 @@ print("Size of vocabulary: ", len(vocabulary))
 
 print("\n Calculating the co-occurrence matrix ...")
 co_occurrence_dict = glove.co_occurrence.cooccurrences(corpus, vocabulary, S_WINDOW)
+print('Size of cooccurrences (conexions): ', len(co_occurrence_dict))
 
+# if we want to save the hist cost
 print('optimizing theta ...')
 learinig_rate = 0.0005
 hist_cost = []
-for i in range(20):
+for i in range(5):
+    print(f'started cicle {i}')
     gradient = glove.gradient.gradient_descent_dict(vocabulary, theta, co_occurrence_dict)
     theta = theta - learinig_rate * gradient
     cost_model = glove.cost_function.cost_glove_dict(vocabulary, theta, co_occurrence_dict)
     hist_cost.append(cost_model)
+    print(f'finished cicle {i}')
 
 plt.plot(range(len(hist_cost)), hist_cost)
 plt.title("Learning")
 plt.xlabel("Iteration")
 plt.ylabel("Cost")
 plt.show()
+plt.savefig('learning_hist.png')
+
+# if we do not want to save the hist cost
+print('optimizing theta ...')
+learinig_rate = 0.0005
+for i in range(5):
+    print(f'started cicle {i}')
+    gradient = glove.gradient.gradient_descent_dict(vocabulary, theta, co_occurrence_dict)
+    theta = theta - learinig_rate * gradient
+    print(f'finished cicle {i}')
+
 
 # save data
 data_context = {}
@@ -74,12 +87,23 @@ for context_word in vocabulary:
                                                 theta,
                                                 DIMENSION,
                                                 central = False)
-    data_context[context_word] = context_vector 
+    data_context[context_word] = context_vector
 
 df = pd.DataFrame(data_context)
 df = df.T
-df.to_csv('C:/Users/Cristian Marquez/Documents/Cristian/Academico/Projects/NLP/word2vec_V2/word2vec/glove_V1.csv')
+df.to_csv('glove_V1_spanish.csv')
 
+
+
+# # save and read coocurrence dictionary
+path = 'C:/Users/Cristian Marquez/Documents/Cristian/Academico/Projects/NLP/word2vec_V2/'
+with open(path + 'theta_spanish' + '.pkl', 'wb') as f:
+            pickle.dump(theta, f, pickle.HIGHEST_PROTOCOL)
+
+# with open(path + 'co_occurence_spanish' '.pkl', 'rb') as f:
+#     co_occurrence_dict = pickle.load(f)
+
+  
 # # implement with matrix
 # print("\n Calculating the co-occurrence matrix ...")
 # com = time.time()
