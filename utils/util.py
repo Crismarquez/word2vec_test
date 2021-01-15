@@ -2,27 +2,8 @@
 This is the documentation for this module
 """
 
-from typing import Union, List
+from typing import List
 import numpy as np
-
-
-def add_plus_one(input_variable: Union[int, float]) -> Union[int, float]:
-    """
-    Adds one to a given number
-    """
-
-    return input_variable + 1
-
-
-def add_two_numbers(
-    number_1: Union[int, float],
-    number_2: Union[int, float],
-) -> Union[int, float]:
-    """
-    Adds two numbers
-    """
-
-    return number_1 + number_2
 
 
 def gen_vocabulary(corpus: List[str]) -> List[str]:
@@ -42,7 +23,7 @@ def gen_vocabulary(corpus: List[str]) -> List[str]:
     return list(set(corpus))
 
 
-def gen_theta(vocabulary: List[str], dimension: int, seed: int = None) -> List[float]:
+def gen_theta(vocabulary: List[str], dimension: int, seed: int = None):
     """
     Generate a vector that will contain the vector representacion
     for each word, both central word and context word, the first half related
@@ -90,7 +71,7 @@ def find_index(word: str, vocabulary: List[str]) -> int:
 
 
 def find_location(
-    word_index: int, theta: List[float], dimension: int, central: bool = True
+    word_index: int, theta, dimension: int, central: bool = True
 ) -> List[int]:
     """
     Find the location of a word in the theta vector in terms of start index
@@ -101,7 +82,7 @@ def find_location(
     word_index : int
         Index word in the vocabulary list, use find_index function to get this
         parameter.
-    theta : list
+    theta : numpy.ndarray
         Array that contains the vector representation of words, initially use
         gen_theta to get this parameter.
     dimension : int
@@ -129,8 +110,8 @@ def find_location(
 
 
 def find_vector(
-    word_index: int, theta: List[float], dimension: int, central: bool = True
-) -> List[float]:
+    word_index: int, theta, dimension: int, central: bool = True
+):
     """
     Extract the vector representation of a word in theta vector.
 
@@ -139,7 +120,7 @@ def find_vector(
     word_index : int
         Index word in the vocabulary list, use find_index function to get this
         parameter.
-    theta : list
+    theta : numpy.ndarray
         Array that contains the vector representation of words, initially use
         gen_theta to get this parameter.
     dimension : int
