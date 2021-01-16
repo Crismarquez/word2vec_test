@@ -72,7 +72,7 @@ plt.savefig('learning_hist.png')
 # if we do not want to save the hist cost
 print('optimizing theta ...')
 learinig_rate = 0.0005
-for i in range(5):
+for i in range(2):
     print(f'started cicle {i}')
     gradient = glove.gradient.gradient_descent_dict(vocabulary, theta, co_occurrence_dict)
     theta = theta - learinig_rate * gradient
@@ -94,15 +94,19 @@ df = df.T
 df.to_csv('glove_V1_spanish.csv')
 
 
-
 # # save and read coocurrence dictionary
 path = 'C:/Users/Cristian Marquez/Documents/Cristian/Academico/Projects/NLP/word2vec_V2/'
 with open(path + 'theta_spanish' + '.pkl', 'wb') as f:
             pickle.dump(theta, f, pickle.HIGHEST_PROTOCOL)
 
-# with open(path + 'co_occurence_spanish' '.pkl', 'rb') as f:
-#     co_occurrence_dict = pickle.load(f)
+with open(path + 'co_occurence_spanish' '.pkl', 'rb') as f:
+    co_occurrence_dict = pickle.load(f)
 
+with open(path + 'theta_spanish' '.pkl', 'rb') as f:
+    theta = pickle.load(f)
+
+with open(path + 'vocabulary_spanish' '.pkl', 'rb') as f:
+    vocabulary = pickle.load(f)
   
 # # implement with matrix
 # print("\n Calculating the co-occurrence matrix ...")
