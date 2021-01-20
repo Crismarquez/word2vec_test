@@ -11,7 +11,7 @@ import utils.util
 
 
 def denom_softmax(
-    vocabulary: List[str], theta, dimension: int
+    vocabulary: List[str], theta: np.ndarray, dimension: int
 ) -> List[float]:
     """
     Calculates the denominator corresponding to the soft-max function, that is
@@ -50,7 +50,7 @@ def denom_softmax(
     return denom_vec
 
 
-def matrix_softmax(vocabulary: List[str], theta):
+def matrix_softmax(vocabulary: List[str], theta: np.ndarray) -> np.ndarray:
     """
     This function creates a matrix with the softmax calculation for all
     convination central word and context words, creates a matrix where the
@@ -89,7 +89,7 @@ def matrix_frequency(
     corpus: List[str],
     vocabulary: List[str],
     s_window: int,
-):
+) -> np.ndarray:
     """
     Calculates the frequency for each combination between central and context
     word, return a matrix where the columns refers to central words and the rows
@@ -140,7 +140,7 @@ def matrix_frequency(
 
 
 def cost_function(
-    corpus: List[str], mtx_soft, mtx_frequency
+    corpus: List[str], mtx_soft: np.ndarray, mtx_frequency: np.ndarray
 ) -> float:
     """
     Computes the cost function difined by skip-gram model, using the log function
@@ -173,9 +173,9 @@ def cost_function(
 def derivative(
     corpus: List[str],
     vocabulary: List[str],
-    theta,
-    mtx_soft,
-    mtx_frequency,
+    theta: np.ndarray,
+    mtx_soft: np.ndarray,
+    mtx_frequency: np.ndarray,
 ):
     """
     Computes the derivative for the cost function difined by skip-gram model,

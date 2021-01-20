@@ -3,6 +3,7 @@
 Test util functions
 """
 import utils.util
+import numpy as np
 
 
 # Test gen_vocabulary()
@@ -36,3 +37,27 @@ def test_size_gen_theta():
     theta = utils.util.gen_theta(vocabulary, dimension)
 
     assert len(theta) == 2 * len(vocabulary) * dimension
+
+
+def test_find_vector_central():
+    """
+    Test find the vector represntation when the word is central
+    """
+    dimension = 2
+    theta = np.array([1, 2, 3, 4,
+                      5, 6, 7, 8])
+    central_vector = utils.util.find_vector(1, theta, dimension)
+
+    assert central_vector.sum() == 7
+
+
+def test_find_vector_context():
+    """
+    Test find the vector represntation when the word is ccontext
+    """
+    dimension = 2
+    theta = np.array([1, 2, 3, 4,
+                      5, 6, 7, 8])
+    central_vector = utils.util.find_vector(0, theta, dimension, central=False)
+
+    assert central_vector.sum() == 11

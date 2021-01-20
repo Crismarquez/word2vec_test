@@ -2,7 +2,7 @@
 This is the documentation for this module
 """
 
-from typing import List
+from typing import List, Optional
 import numpy as np
 
 
@@ -23,7 +23,11 @@ def gen_vocabulary(corpus: List[str]) -> List[str]:
     return list(set(corpus))
 
 
-def gen_theta(vocabulary: List[str], dimension: int, seed: int = None):
+def gen_theta(
+    vocabulary: List[str],
+    dimension: int,
+    seed: Optional[int] = None
+) -> np.ndarray:
     """
     Generate a vector that will contain the vector representacion
     for each word, both central word and context word, the first half related
@@ -45,7 +49,7 @@ def gen_theta(vocabulary: List[str], dimension: int, seed: int = None):
         vector representation for each word.
     """
     theta_size = 2 * len(vocabulary) * dimension
-    if seed:
+    if seed is not None:
         np.random.seed(seed)
 
     return np.random.uniform(-1, 1, theta_size)
@@ -71,7 +75,7 @@ def find_index(word: str, vocabulary: List[str]) -> int:
 
 
 def find_location(
-    word_index: int, theta, dimension: int, central: bool = True
+    word_index: int, theta: np.ndarray, dimension: int, central: bool = True
 ) -> List[int]:
     """
     Find the location of a word in the theta vector in terms of start index
@@ -110,8 +114,8 @@ def find_location(
 
 
 def find_vector(
-    word_index: int, theta, dimension: int, central: bool = True
-):
+    word_index: int, theta: np.ndarray, dimension: int, central: bool = True
+) -> np.ndarray:
     """
     Extract the vector representation of a word in theta vector.
 
@@ -136,9 +140,6 @@ def find_vector(
     numpy.ndarray
         the vector representation in theta for word_index.
     """
-    if central is True:
-        start, end = find_location(word_index, theta, dimension)
-    else:
-        start, end = find_location(word_index, theta, dimension, central=False)
+    start, end = find_location(word_index, theta, dimension, central)
 
     return theta[start:end]
