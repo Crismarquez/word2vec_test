@@ -2,8 +2,8 @@
 """
 Test util functions
 """
-import utils.util
 import numpy as np
+import utils.util
 
 
 # Test gen_vocabulary()
