@@ -2,7 +2,7 @@
 """
 This module compute the cost function for glove model
 """
-from typing import Union, List
+from typing import Union, List, Dict, Tuple
 import numpy as np
 import utils.util
 
@@ -30,8 +30,8 @@ def sigmoid(value: int, factor: Union[float, int]) -> float:
 
 def cost_glove_dict(
     vocabulary: List[str],
-    theta,
-    co_occurrences: dict,
+    theta: np.ndarray,
+    co_occurrences: Dict[Tuple[str, str], int],
 ) -> float:
     '''
     Calculate the cost function for glove model, using cooccurrences from a dictionary.
@@ -65,10 +65,11 @@ def cost_glove_dict(
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
-        context_vector = utils.util.find_vector(context_index,
-                                                theta,
-                                                dimension,
-                                                central = False)
+        context_vector = utils.util.find_vector(
+            context_index,
+            theta,
+            dimension,
+            central = False)
 
         P_ij = co_occurrences[(central_word, context_word)]
 
@@ -81,8 +82,8 @@ def cost_glove_dict(
 
 def cost_glove(
     vocabulary: List[str],
-    theta,
-    co_occurrence_mtx,
+    theta: np.ndarray,
+    co_occurrence_mtx: np.ndarray,
 ) -> float:
     """
     Calculate the cost function for glove model. using cooccurrences from a matrix.

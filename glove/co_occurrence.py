@@ -2,7 +2,7 @@
 """
 This module compute de co-occurrence between two words in a corpus given.
 """
-from typing import List
+from typing import List, Dict, Tuple
 import numpy as np
 import utils.util
 
@@ -11,7 +11,7 @@ def cooccurrences(
     corpus: List[str],
     vocabulary: List[str],
     s_window: int
-) -> dict:
+) -> Dict[Tuple[str, str], int]:
     '''
     Calculates the frequency for each combination between central and context
     word, return a dictionary where the first elment of key refers to central words
@@ -30,7 +30,7 @@ def cooccurrences(
 
     Returns
     -------
-    co_occurrences : dict
+    co_occurrences : Dict[Tuple[str, str], int]
         Dictionary, the keys are tuples of two elements where the first elment
         of key refers to central words and the second one refers to context word.
 
@@ -70,7 +70,7 @@ def matrix_frequency(
     corpus: List[str],
     vocabulary: List[str],
     s_window: int,
-):
+) -> np.ndarray:
     """
     Calculates the frequency for each combination between central and context
     word, return a matrix where the columns refers to central words and the rows

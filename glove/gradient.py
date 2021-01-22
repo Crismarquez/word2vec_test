@@ -2,7 +2,7 @@
 """
 This module compute the gradient for the cost function implemented by glove model
 """
-from typing import List
+from typing import List, Dict, Tuple
 import numpy as np
 import utils.util
 import glove.cost_function
@@ -10,9 +10,9 @@ import glove.cost_function
 
 def gradient_descent_dict(
     vocabulary: List[str],
-    theta,
-    co_occurrences: dict,
-):
+    theta: np.ndarray,
+    co_occurrences: Dict[Tuple[str, str], int],
+) -> np.ndarray:
     """
     Campute the gradient descent. using cooccurrences from a dictionary.
 
@@ -23,7 +23,7 @@ def gradient_descent_dict(
     theta : numpy.array
         Array that contains the vector representation of words, central and context
         representation.
-    co_occurrences : dict
+    co_occurrences : Dict[Tuple[str, str], int]
         This dictionary contains the co-occurrence for each combination in the corpus
         between central and context word, the keys are tuples of two elements where
         the first element of key refers to central words and the second one refers
@@ -43,10 +43,9 @@ def gradient_descent_dict(
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
-        context_vector = utils.util.find_vector(context_index,
-                                                theta,
-                                                dimension,
-                                                central = False)
+        context_vector = utils.util.find_vector(
+            context_index, theta, dimension, central=False
+        )
 
         central_start, central_end = utils.util.find_location(
             central_index, theta, dimension
@@ -81,11 +80,11 @@ def gradient_descent_dict(
 
 def gradient_descent(
     vocabulary: List[str],
-    theta,
-    co_occurrence_mtx,
-):
+    theta: np.ndarray,
+    co_occurrence_mtx: np.ndarray,
+) -> np.ndarray:
     """
-    Campute the gradient descent.
+    Campute the gradient  descent.
 
     Parameters
     ----------
