@@ -84,7 +84,7 @@ def gradient_descent(
     co_occurrence_mtx: np.ndarray,
 ) -> np.ndarray:
     """
-    Campute the gradient descent.
+    Campute the gradient  descent.
 
     Parameters
     ----------
