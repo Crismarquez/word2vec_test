@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 This script run the glove model in order to obtain a vector representation for
-words in the vocabulary.
+words in the vocabulary, .
 """
 #import time
 
+import pandas as pd
 import nltk
 import matplotlib.pyplot as plt
 
@@ -15,16 +16,17 @@ import glove.gradient
 
 
 # import corpus
-text = nltk.corpus.brown.words()
-text = text + nltk.corpus.gutenberg.words()
-print("\n Size imported corpus, tockens: ", len(text))
+texts = nltk.corpus.brown.words()
+texts = texts + nltk.corpus.gutenberg.words()
+
+print("\n Size imported corpus, tockens: ", len(texts))
 
 # clean corpus
-corpus = [w.lower() for w in text]
+corpus = [w.lower() for w in texts]
 
 # hyperparameters
 DIMENSION = 10  # size of word vectors
-S_WINDOW = 3  # width for windows
+S_WINDOW = 5  # width for windows
 
 # filter vocabulary
 frequency = nltk.FreqDist(corpus)
@@ -38,9 +40,10 @@ print("Size of vocabulary: ", len(vocabulary))
 print("\n Calculating the co-occurrence matrix ...")
 co_occurrence_dict = glove.co_occurrence.cooccurrences(corpus, vocabulary, S_WINDOW)
 
+print('optimizing theta ...')
 learinig_rate = 0.0005
 hist_cost = []
-for i in range(5):
+for i in range(20):
     gradient = glove.gradient.gradient_descent_dict(vocabulary, theta, co_occurrence_dict)
     theta = theta - learinig_rate * gradient
     cost_model = glove.cost_function.cost_glove_dict(vocabulary, theta, co_occurrence_dict)
@@ -52,6 +55,19 @@ plt.xlabel("Iteration")
 plt.ylabel("Cost")
 plt.show()
 
+# save data
+data_context = {}
+for context_word in vocabulary:
+    context_index = vocabulary.index(context_word)
+    context_vector = utils.util.find_vector(context_index,
+                                                theta,
+                                                DIMENSION,
+                                                central = False)
+    data_context[context_word] = context_vector 
+
+df = pd.DataFrame(data_context)
+df = df.T
+df.to_csv('C:/Users/Cristian Marquez/Documents/Cristian/Academico/Projects/NLP/word2vec_V2/word2vec/glove_V1.csv')
 
 # # implement with matrix
 # print("\n Calculating the co-occurrence matrix ...")
