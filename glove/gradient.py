@@ -43,10 +43,9 @@ def gradient_descent_dict(
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
-        context_vector = utils.util.find_vector(context_index,
-                                                theta,
-                                                dimension,
-                                                central = False)
+        context_vector = utils.util.find_vector(
+            context_index, theta, dimension, central=False
+        )
 
         central_start, central_end = utils.util.find_location(
             central_index, theta, dimension
