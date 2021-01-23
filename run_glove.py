@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 This script run the glove model in order to obtain a vector representation for
-words in the vocabulary.
+words in the vocabulary, .
 """
-#import time
-import re
+# import time
 
 import pandas as pd
 import nltk
-import textacy.datasets
 import matplotlib.pyplot as plt
 
 import utils.util
@@ -18,17 +16,8 @@ import glove.gradient
 
 
 # import corpus
-# texts = nltk.corpus.brown.words()
-# texts = texts + nltk.corpus.gutenberg.words()
-
-ds = textacy.datasets.Wikipedia(lang="en", version="current")
-ds.download()
-ds.info
-
-texts = []
-for text in ds.texts(limit=6000):
-    texts = texts + re.compile(r'\W+', re.UNICODE).split(text)
-
+texts = nltk.corpus.brown.words()
+texts = texts + nltk.corpus.gutenberg.words()
 
 print("\n Size imported corpus, tockens: ", len(texts))
 
@@ -51,13 +40,17 @@ print("Size of vocabulary: ", len(vocabulary))
 print("\n Calculating the co-occurrence matrix ...")
 co_occurrence_dict = glove.co_occurrence.cooccurrences(corpus, vocabulary, S_WINDOW)
 
-print('optimizing theta ...')
+print("optimizing theta ...")
 learinig_rate = 0.0005
 hist_cost = []
 for i in range(20):
-    gradient = glove.gradient.gradient_descent_dict(vocabulary, theta, co_occurrence_dict)
+    gradient = glove.gradient.gradient_descent_dict(
+        vocabulary, theta, co_occurrence_dict
+    )
     theta = theta - learinig_rate * gradient
-    cost_model = glove.cost_function.cost_glove_dict(vocabulary, theta, co_occurrence_dict)
+    cost_model = glove.cost_function.cost_glove_dict(
+        vocabulary, theta, co_occurrence_dict
+    )
     hist_cost.append(cost_model)
 
 plt.plot(range(len(hist_cost)), hist_cost)
@@ -70,15 +63,16 @@ plt.show()
 data_context = {}
 for context_word in vocabulary:
     context_index = vocabulary.index(context_word)
-    context_vector = utils.util.find_vector(context_index,
-                                                theta,
-                                                DIMENSION,
-                                                central = False)
-    data_context[context_word] = context_vector 
+    context_vector = utils.util.find_vector(
+        context_index, theta, DIMENSION, central=False
+    )
+    data_context[context_word] = context_vector
 
 df = pd.DataFrame(data_context)
 df = df.T
-df.to_csv('C:/Users/Cristian Marquez/Documents/Cristian/Academico/Projects/NLP/word2vec_V2/word2vec/glove_V1.csv')
+df.to_csv(
+    "C:/Users/Cristian Marquez/Documents/Cristian/Academico/Projects/NLP/word2vec_V2/word2vec/glove_V1.csv"
+)
 
 # # implement with matrix
 # print("\n Calculating the co-occurrence matrix ...")
