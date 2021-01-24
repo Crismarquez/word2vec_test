@@ -7,6 +7,7 @@ import numpy as np
 import utils.util
 import glove.cost_function
 
+import sys
 
 def gradient_descent_dict(
     vocabulary: List[str],
