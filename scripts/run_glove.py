@@ -53,7 +53,7 @@ for i in range(6):
     # update file
 
     with open(file_path, "w") as fp:
-        json.dump(list(theta), fp)
+        json.dump({"theta": list(theta)}, fp)
 
     if i % 3 == 0:
         cost_model = glove.cost_function.cost_glove_dict(
