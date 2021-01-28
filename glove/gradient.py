@@ -5,7 +5,7 @@ This module compute the gradient for the cost function implemented by glove mode
 from typing import List, Dict, Tuple
 import numpy as np
 import utils.util
-import glove.cost_function 
+import glove.cost_function
 
 
 def gradient_descent_dict(
