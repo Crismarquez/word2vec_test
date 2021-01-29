@@ -15,8 +15,8 @@ import glove.co_occurrence
 
 
 # import corpus
-texts = nltk.corpus.brown.words()[:500000]
-# texts = texts + nltk.corpus.gutenberg.words()
+texts = nltk.corpus.brown.words()
+texts = texts + nltk.corpus.gutenberg.words()
 # texts = texts + nltk.corpus.webtext.words()
 # texts = texts + nltk.corpus.reuters.words()
 # texts = texts + nltk.corpus.inaugural.words()

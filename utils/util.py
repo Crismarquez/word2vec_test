@@ -1,7 +1,7 @@
 """
 This is the documentation for this module
 """
-
+import random
 from typing import List, Optional, Dict, Tuple
 import numpy as np
 
@@ -186,3 +186,28 @@ def keystr_to_keytuple(co_occurrences: Dict[str, int]) -> Dict[Tuple[str, str], 
 
     """
     return {tuple(key.split("<>")): value for key, value in co_occurrences.items()}
+
+
+def random_dict(
+    co_occurrences: Dict[Tuple[str, str], int], n_sample: int
+) -> Dict[Tuple[str, str], int]:
+    """
+    Select a random samples in co_occurrences
+
+    Parameters
+    ----------
+    co_occurrences : Dict[Tuple[str, str], int]
+        Dictionary, the keys are tuples of two elements where the first elment
+        of key refers to central words and the second one refers to context word.
+
+    n_sample : int
+        the number of samples that the new dictionary will contain.
+
+    Returns
+    -------
+    Dict[Tuple[str, str], int]
+        DESCRIPTION.
+
+    """
+    muestra = random.choices(list(co_occurrences.keys()), k=n_sample)
+    return {choice: co_occurrences[choice] for choice in muestra}

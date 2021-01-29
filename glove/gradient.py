@@ -8,13 +8,90 @@ import utils.util
 import glove.cost_function
 
 
+def stocastic_gradient_descent(
+    vocabulary: List[str],
+    theta: np.ndarray,
+    co_occurrences: Dict[Tuple[str, str], int],
+    sample_rate: float = 0.5,
+) -> np.ndarray:
+    """
+    Compute the stocastic gradient descent. using cooccurrences from a dictionary
+    each iteration will take a random sample in the co_occurrences dictionary, and
+    only this words will be update in theta.
+
+    Parameters
+    ----------
+    vocabulary : List[str]
+        List of unique words in the corpus.
+    theta : numpy.array
+        Array that contains the vector representation of words, central and context
+        representation.
+    co_occurrences : Dict[Tuple[str, str], int]
+        This dictionary contains the co-occurrence for each combination in the corpus
+        between central and context word, the keys are tuples of two elements where
+        the first element of key refers to central words and the second one refers
+        to context word.
+    sample_rate: float
+        To take a sample from the original dictionary.
+
+    Returns
+    -------
+    numpy.array
+        Numpy array that contains the gradient for the vector theta.
+
+    """
+
+    grad_theta = np.zeros_like(theta)
+    dimension = len(theta) // 2 // len(vocabulary)
+    FACTOR = 10
+    n_samples = int(len(co_occurrences) * sample_rate)
+    co_occurrences = utils.util.random_dict(co_occurrences, n_samples)
+    for central_word, context_word in co_occurrences.keys():
+        central_index = vocabulary.index(central_word)
+        central_vector = utils.util.find_vector(central_index, theta, dimension)
+        context_index = vocabulary.index(context_word)
+        context_vector = utils.util.find_vector(
+            context_index, theta, dimension, central=False
+        )
+
+        central_start, central_end = utils.util.find_location(
+            central_index, theta, dimension
+        )
+        context_start, context_end = utils.util.find_location(
+            context_index, theta, dimension, central=False
+        )
+
+        P_ij = co_occurrences[(central_word, context_word)]
+
+        dot_product = np.dot(context_vector, central_vector)
+        context_gradient = (
+            (2 * glove.cost_function.sigmoid(P_ij, FACTOR) - 1)
+            * central_vector
+            * (dot_product - np.log(P_ij))
+        )
+        central_gradient = (
+            (2 * glove.cost_function.sigmoid(P_ij, FACTOR) - 1)
+            * context_vector
+            * (dot_product - np.log(P_ij))
+        )
+
+        grad_theta[central_start:central_end] = (
+            grad_theta[central_start:central_end] + central_gradient
+        )
+        grad_theta[context_start:context_end] = (
+            grad_theta[context_start:context_end] + context_gradient
+        )
+
+    return grad_theta
+
+
 def gradient_descent_dict(
     vocabulary: List[str],
     theta: np.ndarray,
     co_occurrences: Dict[Tuple[str, str], int],
 ) -> np.ndarray:
     """
-    Campute the gradient descent. using cooccurrences from a dictionary.
+    Compute the gradient descent. using cooccurrences from a dictionary.
 
     Parameters
     ----------
