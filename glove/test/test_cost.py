@@ -7,7 +7,7 @@ import glove.cost_function
 
 
 def test_cost():
-    '''
+    """
     Test the cost function using two words with two dimensions in the vector
     representation theta.
 
@@ -15,7 +15,7 @@ def test_cost():
     -------
     None.
 
-    '''
+    """
     vocabulary = ["i", "like"]
     i_c = np.array([0.1, 0.2])
     like_c = np.array([-0.2, 0.1])
@@ -41,7 +41,7 @@ def test_cost():
 
 
 def test_cost_dict():
-    '''
+    """
     Test the cost function using two words with two dimensions in the vector
     representation theta.
 
@@ -49,7 +49,7 @@ def test_cost_dict():
     -------
     None.
 
-    '''
+    """
     vocabulary = ["i", "like"]
     i_c = np.array([0.1, 0.2])
     like_c = np.array([-0.2, 0.1])
@@ -58,7 +58,7 @@ def test_cost_dict():
 
     theta = np.array([0.1, 0.2, -0.2, 0.1, -0.2, 0.2, -0.1, 0.3])
 
-    cooccurrence = {('i', 'like'): 5, ('like', 'i'): 4}
+    cooccurrence = {"i<>like": 5, "like<>i": 4}
 
     factor = 10
     f_i_like = 2 * glove.cost_function.sigmoid(5, factor) - 1

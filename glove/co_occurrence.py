@@ -2,20 +2,19 @@
 """
 This module compute de co-occurrence between two words in a corpus given.
 """
-from typing import List, Dict, Tuple
+from typing import List, Dict
 import numpy as np
 import utils.util
 
 
 def cooccurrences(
-    corpus: List[str],
-    vocabulary: List[str],
-    s_window: int
-) -> Dict[Tuple[str, str], int]:
-    '''
+    corpus: List[str], vocabulary: List[str], s_window: int
+) -> Dict[str, int]:
+    """
     Calculates the frequency for each combination between central and context
-    word, return a dictionary where the first elment of key refers to central words
-    and the second one elment refers to context word.
+    word, return a dictionary where the key is a string that contain the central
+    word in the right and context word on the left, this words are separed by
+    "<>" character.
     Ignoring the words that not exist in vocabulary.
 
     Parameters
@@ -30,11 +29,11 @@ def cooccurrences(
 
     Returns
     -------
-    co_occurrences : Dict[Tuple[str, str], int]
-        Dictionary, the keys are tuples of two elements where the first elment
-        of key refers to central words and the second one refers to context word.
+    co_occurrences : Dict[str, int]
+        Dictionary, the key is a string that contain the central word and
+        context word separed by"<>" character.
 
-    '''
+    """
     co_occurrences = {}
 
     for pos_central in range(s_window, len(corpus) - s_window):
@@ -48,20 +47,20 @@ def cooccurrences(
                 context_word_r = corpus[pos_central + (1 + i)]  # right
 
                 if context_word_l in vocabulary:
-                    query = co_occurrences.get((central_word, context_word_l))
+                    query = co_occurrences.get((central_word + "<>" + context_word_l))
 
                     if query:
-                        co_occurrences[(central_word, context_word_l)] += 1
+                        co_occurrences[(central_word + "<>" + context_word_l)] += 1
                     else:
-                        co_occurrences[(central_word, context_word_l)] = 1
+                        co_occurrences[(central_word + "<>" + context_word_l)] = 1
 
                 if context_word_r in vocabulary:
-                    query = co_occurrences.get((central_word, context_word_r))
+                    query = co_occurrences.get((central_word + "<>" + context_word_r))
 
                     if query:
-                        co_occurrences[(central_word, context_word_r)] += 1
+                        co_occurrences[(central_word + "<>" + context_word_r)] += 1
                     else:
-                        co_occurrences[(central_word, context_word_r)] = 1
+                        co_occurrences[(central_word + "<>" + context_word_r)] = 1
 
     return co_occurrences
 

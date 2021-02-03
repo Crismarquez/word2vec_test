@@ -19,7 +19,7 @@ def test_derivative_numeric_one_dimension_dict():
     vocabulary = ["i", "like"]
     theta = np.array([0.1, -0.2, -0.2, -0.1])
 
-    cooccurrences = {('i', 'like'): 5, ('like', 'i'): 4}
+    cooccurrences = {"i<>like": 5, "like<>i": 4}
 
     f_z = glove.cost_function.cost_glove_dict(vocabulary, theta, cooccurrences)
 
@@ -50,7 +50,7 @@ def test_derivative_numeric_two_words_dict():
     vocabulary = ["i", "like"]
     theta = np.array([0.1, 0.2, -0.2, 0.1, -0.2, 0.2, -0.1, 0.3])
 
-    cooccurrences = {('i', 'like'): 5, ('like', 'i'): 4}
+    cooccurrences = {"i<>like": 5, "like<>i": 4}
 
     f_z = glove.cost_function.cost_glove_dict(vocabulary, theta, cooccurrences)
 
@@ -105,9 +105,7 @@ def test_derivative_numeric_more_words_dict():
     vocabulary = utils.util.gen_vocabulary(corpus)
     theta = utils.util.gen_theta(vocabulary, DIMENSION)
 
-    cooccurrences = glove.co_occurrence.cooccurrences(
-        corpus, vocabulary, S_WINDOW
-    )
+    cooccurrences = glove.co_occurrence.cooccurrences(corpus, vocabulary, S_WINDOW)
 
     f_z = glove.cost_function.cost_glove_dict(vocabulary, theta, cooccurrences)
 

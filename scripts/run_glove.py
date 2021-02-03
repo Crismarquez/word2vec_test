@@ -27,7 +27,7 @@ for file_name in files_name:
         files.append(json.load(f)[file_name])
 
 vocabulary = files[0]
-co_occurrence = utils.util.keystr_to_keytuple(files[1])
+co_occurrence = files[1]
 theta = np.array(files[2])
 
 print("Size of filtered vocabulary: ", "{:,.0f}".format(len(vocabulary)))
