@@ -2,7 +2,7 @@
 """
 This module compute the cost function for glove model
 """
-from typing import Union, List, Dict, Tuple
+from typing import Union, List, Dict
 import numpy as np
 import utils.util
 
@@ -28,12 +28,11 @@ def sigmoid(value: int, factor: Union[float, int]) -> float:
 
     return 1 / (1 + np.exp(-value / factor))
 
+
 def cost_glove_dict(
-    vocabulary: List[str],
-    theta: np.ndarray,
-    co_occurrences: Dict[Tuple[str, str], int],
+    vocabulary: List[str], theta: np.ndarray, co_occurrences: Dict[str, int]
 ) -> float:
-    '''
+    """
     Calculate the cost function for glove model, using cooccurrences from a dictionary.
 
     Parameters
@@ -44,34 +43,35 @@ def cost_glove_dict(
     theta : numpy.array
         Array that contains the vector representation of words, central and context
         representation, initially use gen_theta to get this parameter.
-    co_occurrences : dict
+    co_occurrences : Dict[str, int]
         This dictionary contains the co-occurrence for each combination in the corpus
-        between central and context word, the keys are tuples of two elements where
-        the first element of key refers to central words and the second one refers
-        to context word.
+        between central and context word, the key is a string that contain the central
+        word in the right and context word on the left, this words are separed by
+        "<>" character.
 
     Returns
     -------
     float
         Cost for the model with the currently theta.
 
-    '''
+    """
 
     cost = 0
     FACTOR = 10
     dimension = len(theta) // 2 // len(vocabulary)
 
-    for central_word, context_word in co_occurrences.keys():
+    for central_context in co_occurrences.keys():
+        sep_central_context = central_context.split("<>")
+        central_word = sep_central_context[0]
+        context_word = sep_central_context[1]
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
         context_vector = utils.util.find_vector(
-            context_index,
-            theta,
-            dimension,
-            central = False)
+            context_index, theta, dimension, central=False
+        )
 
-        P_ij = co_occurrences[(central_word, context_word)]
+        P_ij = co_occurrences[central_context]
 
         cost += (2 * sigmoid(P_ij, FACTOR) - 1) * (
             np.dot(context_vector, central_vector) - np.log(P_ij)
@@ -113,7 +113,7 @@ def cost_glove(
     dimension = len(theta) // 2 // len(vocabulary)
     for central_index, _ in enumerate(vocabulary):
         central_vector = utils.util.find_vector(central_index, theta, dimension)
-        for context_index, _  in enumerate(vocabulary):
+        for context_index, _ in enumerate(vocabulary):
             context_vector = utils.util.find_vector(
                 context_index, theta, dimension, central=False
             )

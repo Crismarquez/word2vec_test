@@ -38,7 +38,9 @@ matrix_frequency = skip_grams.functions.matrix_frequency(corpus, vocabulary, S_W
 
 matrix_soft = skip_grams.functions.matrix_softmax(vocabulary, theta)
 
-cost_function = skip_grams.functions.cost_function(corpus, matrix_soft, matrix_frequency)
+cost_function = skip_grams.functions.cost_function(
+    corpus, matrix_soft, matrix_frequency
+)
 df_actual = skip_grams.functions.derivative(
     corpus, vocabulary, theta, matrix_soft, matrix_frequency
 )

@@ -24,9 +24,7 @@ def gen_vocabulary(corpus: List[str]) -> List[str]:
 
 
 def gen_theta(
-    vocabulary: List[str],
-    dimension: int,
-    seed: Optional[int] = None
+    vocabulary: List[str], dimension: int, seed: Optional[int] = None
 ) -> np.ndarray:
     """
     Generate a vector that will contain the vector representacion
