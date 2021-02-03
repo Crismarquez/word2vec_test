@@ -41,10 +41,10 @@ print(f"optimizing theta ... with a learning rate = {learning_rate}")
 hist_cost = [glove.cost_function.cost_glove_dict(vocabulary, theta, co_occurrence)]
 
 file_path = os.path.join(base, "theta.json")
-for i in range(9):
+for i in range(10):
     print(f"Iteration n°: {i}")
     gradient = glove.gradient.stocastic_gradient_descent(
-        vocabulary, theta, co_occurrence, sample_rate=0.5
+        vocabulary, theta, co_occurrence
     )
 
     max_grad = gradient.max()
@@ -53,10 +53,10 @@ for i in range(9):
 
     theta = theta - learning_rate * gradient
 
-    # update file
+    # # update file
 
-    with open(file_path, "w") as fp:
-        json.dump({"theta": list(theta)}, fp)
+    # with open(file_path, "w") as fp:
+    #     json.dump({"theta": list(theta)}, fp)
 
     if i % 3 == 0:
         cost_model = glove.cost_function.cost_glove_dict(

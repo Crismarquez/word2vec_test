@@ -189,25 +189,47 @@ def keystr_to_keytuple(co_occurrences: Dict[str, int]) -> Dict[Tuple[str, str], 
 
 
 def random_dict(
-    co_occurrences: Dict[Tuple[str, str], int], n_sample: int
+    vocabulary: List[str],
+    co_occurrences: Dict[str, int],
+    sample_rate: float,
+    central: bool = True,
 ) -> Dict[Tuple[str, str], int]:
     """
-    Select a random samples in co_occurrences
+    Select a random words and filter it in co_occurrences, allows filter in terms
+    of central or context words.
 
     Parameters
     ----------
+    vocabulary : list
+        list of unique words in the corpus.
     co_occurrences : Dict[Tuple[str, str], int]
         Dictionary, the keys are tuples of two elements where the first elment
         of key refers to central words and the second one refers to context word.
-
-    n_sample : int
-        the number of samples that the new dictionary will contain.
+    sample_rate: float
+        To take a sample from the vocabulary list.
+    central : bool, optional
+        Especificate filter in terms of central or context words.
+        The default is True.
 
     Returns
     -------
     Dict[Tuple[str, str], int]
-        DESCRIPTION.
+        co_occurrency for filter words, central or context.
 
     """
-    muestra = random.choices(list(co_occurrences.keys()), k=n_sample)
-    return {choice: co_occurrences[choice] for choice in muestra}
+    n_samples = int(len(vocabulary) * sample_rate)
+    muestra = random.choices(vocabulary, k=n_samples)
+    if central is True:
+        sample_dict = {
+            choice: co_occurrences[choice]
+            for choice in co_occurrences.keys()
+            if choice[0] in muestra
+        }
+    else:
+        sample_dict = {
+            choice: co_occurrences[choice]
+            for choice in co_occurrences.keys()
+            if choice[1] in muestra
+        }
+
+    return sample_dict
