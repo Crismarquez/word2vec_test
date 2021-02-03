@@ -2,7 +2,7 @@
 """
 This module compute the gradient for the cost function implemented by glove model
 """
-from typing import List, Dict, Tuple
+from typing import List, Dict
 import numpy as np
 import utils.util
 import glove.cost_function
@@ -11,7 +11,7 @@ import glove.cost_function
 def gradient_descent_dict(
     vocabulary: List[str],
     theta: np.ndarray,
-    co_occurrences: Dict[Tuple[str, str], int],
+    co_occurrences: Dict[str, int],
 ) -> np.ndarray:
     """
     Campute the gradient descent. using cooccurrences from a dictionary.
@@ -23,11 +23,11 @@ def gradient_descent_dict(
     theta : numpy.array
         Array that contains the vector representation of words, central and context
         representation.
-    co_occurrences : Dict[Tuple[str, str], int]
+    co_occurrences : Dict[str, int]
         This dictionary contains the co-occurrence for each combination in the corpus
-        between central and context word, the keys are tuples of two elements where
-        the first element of key refers to central words and the second one refers
-        to context word.
+        between central and context word, the key is a string that contain the central
+        word in the right and context word on the left, this words are separed by
+        "<>" character.
 
     Returns
     -------
@@ -39,7 +39,10 @@ def gradient_descent_dict(
     grad_theta = np.zeros_like(theta)
     dimension = len(theta) // 2 // len(vocabulary)
     FACTOR = 10
-    for central_word, context_word in co_occurrences.keys():
+    for central_context in co_occurrences.keys():
+        sep_central_context = central_context.split("<>")
+        central_word = sep_central_context[0]
+        context_word = sep_central_context[1]
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
@@ -54,7 +57,7 @@ def gradient_descent_dict(
             context_index, theta, dimension, central=False
         )
 
-        P_ij = co_occurrences[(central_word, context_word)]
+        P_ij = co_occurrences[central_context]
 
         dot_product = np.dot(context_vector, central_vector)
         context_gradient = (

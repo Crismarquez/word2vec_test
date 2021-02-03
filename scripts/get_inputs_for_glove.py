@@ -15,11 +15,11 @@ import glove.co_occurrence
 
 
 # import corpus
-texts = nltk.corpus.brown.words()[:500000]
-# texts = texts + nltk.corpus.gutenberg.words()
-# texts = texts + nltk.corpus.webtext.words()
-# texts = texts + nltk.corpus.reuters.words()
-# texts = texts + nltk.corpus.inaugural.words()
+texts = nltk.corpus.brown.words()
+texts = texts + nltk.corpus.gutenberg.words()
+texts = texts + nltk.corpus.webtext.words()
+texts = texts + nltk.corpus.reuters.words()
+texts = texts + nltk.corpus.inaugural.words()
 
 # clean corpus
 corpus = [w.lower() for w in texts]
@@ -46,8 +46,6 @@ print("Size of theta: ", "{:,.0f}".format(len(theta)))
 # save inputs for glove
 base = "files"
 print("Saving vocabulary, cooccurrence, theta")
-
-co_occurrences = utils.util.keytuple_to_keystr(co_occurrences)
 files_name = ["vocabulary", "co_occurrence", "theta"]
 files = [
     {"vocabulary": vocabulary},

@@ -2,7 +2,7 @@
 This is the documentation for this module
 """
 
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional
 import numpy as np
 
 
@@ -141,48 +141,3 @@ def find_vector(
     start, end = find_location(word_index, theta, dimension, central)
 
     return theta[start:end]
-
-
-def keytuple_to_keystr(co_occurrences: Dict[Tuple[str, str], int]) -> Dict[str, int]:
-    """
-    Convert co-occurrence dictionary keys from tuples to string, useful to save
-    the dictionary in json format.
-
-    Parameters
-    ----------
-    co_occurrences : Dict[Tuple[str, str], int]
-        Dictionary, the keys are tuples of two elements where the first elment
-        of key refers to central words and the second one refers to context word.
-
-    Returns
-    -------
-    Dict[str, int]
-        Dictionary, the keys are string that join the elements in the previous
-        tuple keys by '<>', the left part in the string refers to central words
-        and the right part refers to context word.
-
-    """
-    return {"<>".join(key): value for key, value in co_occurrences.items()}
-
-
-def keystr_to_keytuple(co_occurrences: Dict[str, int]) -> Dict[Tuple[str, str], int]:
-    """
-    Convert co-occurrence dictionary keys from string to tuple, useful to convert
-    the dictionary load from json format. using characters '<>' to separate
-    the words.
-
-    Parameters
-    ----------
-    co_occurrences : Dict[str, int]
-        Dictionary, the keys are string that join the elements by '<>', the left
-        part in the string refers to central words and the right part refers
-        to context word.
-
-    Returns
-    -------
-     Dict[Tuple[str, str], int]
-        Dictionary, the keys are tuples of two elements where the first elment
-        of key refers to central words and the second one refers to context word.
-
-    """
-    return {tuple(key.split("<>")): value for key, value in co_occurrences.items()}
