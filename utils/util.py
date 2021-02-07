@@ -170,23 +170,23 @@ def random_dict(
 
     Returns
     -------
-    Dict[Tuple[str, str], int]
+    Dict[str, int]
         co_occurrency for filter words, central or context.
 
     """
     n_samples = int(len(vocabulary) * sample_rate)
-    muestra = random.choices(vocabulary, k=n_samples)
+    sample = random.choices(vocabulary, k=n_samples)
     if central is True:
         sample_dict = {
             choice: co_occurrences[choice]
             for choice in co_occurrences.keys()
-            if choice.split("<>")[0] in muestra
+            if choice.split("<>")[0] in sample
         }
     else:
         sample_dict = {
             choice: co_occurrences[choice]
             for choice in co_occurrences.keys()
-            if choice.split("<>")[1] in muestra
+            if choice.split("<>")[1] in sample
         }
 
     return sample_dict

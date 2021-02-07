@@ -61,9 +61,7 @@ def cost_glove_dict(
     dimension = len(theta) // 2 // len(vocabulary)
 
     for central_context in co_occurrences.keys():
-        sep_central_context = central_context.split("<>")
-        central_word = sep_central_context[0]
-        context_word = sep_central_context[1]
+        central_word, context_word = central_context.split("<>")
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
