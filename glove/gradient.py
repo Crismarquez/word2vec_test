@@ -27,7 +27,7 @@ def stochastic_gradient_descent(
     theta : numpy.array
         Array that contains the vector representation of words, central and context
         representation.
-    co_occurrences : Dict[Tuple[str, str], int]
+    co_occurrences : Dict[str, int]
         This dictionary contains the co-occurrence for each combination in the corpus
         between central and context word, the keys are tuples of two elements where
         the first element of key refers to central words and the second one refers
