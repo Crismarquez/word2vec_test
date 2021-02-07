@@ -244,3 +244,58 @@ def test_derivative_numeric_more_words():
         count += 1
 
         assert abs(df_actual[choice] - df_approx) < TOL
+
+
+def test_stochastic_gradient_descent():
+    """
+    Test reductions of cost function using the stocastic gradient descent SGD.
+
+    Returns
+    -------
+    None.
+
+    """
+    # input parameters
+    corpus = [
+        "i",
+        "like",
+        "NLP",
+        ",",
+        "i",
+        "like",
+        "machine",
+        "learning",
+        ",",
+        "i",
+        "like",
+        "NLP",
+        ",",
+        "i",
+        "like",
+        "machine",
+        "learning",
+        ".",
+    ]
+    DIMENSION = 5  # dimention for each word vector
+    S_WINDOW = 3  # width for windows
+
+    # initial components
+    vocabulary = utils.util.gen_vocabulary(corpus)
+    theta = utils.util.gen_theta(vocabulary, DIMENSION)
+
+    cooccurrences = glove.co_occurrence.cooccurrences(corpus, vocabulary, S_WINDOW)
+
+    cost_0 = glove.cost_function.cost_glove_dict(vocabulary, theta, cooccurrences)
+
+    learning_rate = 0.008
+    count = 0
+    while count < 4:
+        df_actual = glove.gradient.stochastic_gradient_descent(
+            vocabulary, theta, cooccurrences
+        )
+        theta = theta - learning_rate * df_actual
+        count += 1
+
+    cost_n = glove.cost_function.cost_glove_dict(vocabulary, theta, cooccurrences)
+
+    assert cost_0 > cost_n

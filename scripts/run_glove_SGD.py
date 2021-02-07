@@ -13,7 +13,6 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
-import utils.util
 import glove.cost_function
 import glove.gradient
 
@@ -28,7 +27,7 @@ for file_name in files_name:
         files.append(json.load(f)[file_name])
 
 vocabulary = files[0]
-co_occurrence = utils.util.keystr_to_keytuple(files[1])
+co_occurrence = files[1]
 theta = np.array(files[2])
 
 print("Size of filtered vocabulary: ", "{:,.0f}".format(len(vocabulary)))
@@ -41,9 +40,9 @@ print(f"optimizing theta ... with a learning rate = {learning_rate}")
 hist_cost = [glove.cost_function.cost_glove_dict(vocabulary, theta, co_occurrence)]
 
 file_path = os.path.join(base, "theta.json")
-for i in range(10):
+for i in range(20):
     print(f"Iteration n°: {i}")
-    gradient = glove.gradient.stocastic_gradient_descent(
+    gradient = glove.gradient.stochastic_gradient_descent(
         vocabulary, theta, co_occurrence
     )
 

@@ -2,7 +2,7 @@
 This is the documentation for this module
 """
 import random
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict
 import numpy as np
 
 
@@ -148,7 +148,7 @@ def random_dict(
     co_occurrences: Dict[str, int],
     sample_rate: float,
     central: bool = True,
-) -> Dict[Tuple[str, str], int]:
+) -> Dict[str, int]:
     """
     Select a random words and filter it in co_occurrences, allows filter in terms
     of central or context words.
@@ -157,9 +157,11 @@ def random_dict(
     ----------
     vocabulary : list
         list of unique words in the corpus.
-    co_occurrences : Dict[Tuple[str, str], int]
-        Dictionary, the keys are tuples of two elements where the first elment
-        of key refers to central words and the second one refers to context word.
+    co_occurrences : Dict[str, int]
+        This dictionary contains the co-occurrence for each combination in the corpus
+        between central and context word, the key is a string that contain the central
+        word in the right and context word on the left, this words are separed by
+        "<>" character.
     sample_rate: float
         To take a sample from the vocabulary list.
     central : bool, optional
@@ -178,13 +180,13 @@ def random_dict(
         sample_dict = {
             choice: co_occurrences[choice]
             for choice in co_occurrences.keys()
-            if choice[0] in muestra
+            if choice.split("<>")[0] in muestra
         }
     else:
         sample_dict = {
             choice: co_occurrences[choice]
             for choice in co_occurrences.keys()
-            if choice[1] in muestra
+            if choice.split("<>")[1] in muestra
         }
 
     return sample_dict

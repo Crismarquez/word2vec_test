@@ -8,14 +8,14 @@ import utils.util
 import glove.cost_function
 
 
-def stocastic_gradient_descent(
+def stochastic_gradient_descent(
     vocabulary: List[str],
     theta: np.ndarray,
     co_occurrences: Dict[str, int],
-    sample_rate: float = 0.2,
+    sample_rate: float = 0.4,
 ) -> np.ndarray:
     """
-    Compute the stocastic gradient descent. using cooccurrences from a dictionary
+    Compute the stochastic gradient descent. using cooccurrences from a dictionary
     each iteration will take a random sample of words and filter it in
     the co_occurrences dictionary, and only this words will be update in theta.
     first update central words sample, then context words sample will be updated.
@@ -50,14 +50,17 @@ def stocastic_gradient_descent(
     co_occurrences = utils.util.random_dict(
         vocabulary, co_occurrences, sample_rate, central=True
     )
-    for central_word, context_word in co_occurrences.keys():
+    for central_context in co_occurrences.keys():
+        sep_central_context = central_context.split("<>")
+        central_word = sep_central_context[0]
+        context_word = sep_central_context[1]
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
         context_vector = utils.util.find_vector(
             context_index, theta, dimension, central=False
         )
-        P_ij = co_occurrences[(central_word, context_word)]
+        P_ij = co_occurrences[central_context]
 
         dot_product = np.dot(context_vector, central_vector)
         central_gradient = (
@@ -77,7 +80,10 @@ def stocastic_gradient_descent(
     co_occurrences = utils.util.random_dict(
         vocabulary, co_occurrences, sample_rate, central=False
     )
-    for central_word, context_word in co_occurrences.keys():
+    for central_context in co_occurrences.keys():
+        sep_central_context = central_context.split("<>")
+        central_word = sep_central_context[0]
+        context_word = sep_central_context[1]
         central_index = vocabulary.index(central_word)
         central_vector = utils.util.find_vector(central_index, theta, dimension)
         context_index = vocabulary.index(context_word)
@@ -85,7 +91,7 @@ def stocastic_gradient_descent(
             context_index, theta, dimension, central=False
         )
 
-        P_ij = co_occurrences[(central_word, context_word)]
+        P_ij = co_occurrences[central_context]
 
         dot_product = np.dot(context_vector, central_vector)
         context_gradient = (
