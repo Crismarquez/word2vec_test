@@ -1,8 +1,8 @@
 """
 This is the documentation for this module
 """
-
-from typing import List, Optional
+import random
+from typing import List, Optional, Dict
 import numpy as np
 
 
@@ -141,3 +141,52 @@ def find_vector(
     start, end = find_location(word_index, theta, dimension, central)
 
     return theta[start:end]
+
+
+def random_dict(
+    vocabulary: List[str],
+    co_occurrences: Dict[str, int],
+    sample_rate: float,
+    central: bool = True,
+) -> Dict[str, int]:
+    """
+    Select a random words and filter it in co_occurrences, allows filter in terms
+    of central or context words.
+
+    Parameters
+    ----------
+    vocabulary : list
+        list of unique words in the corpus.
+    co_occurrences : Dict[str, int]
+        This dictionary contains the co-occurrence for each combination in the corpus
+        between central and context word, the key is a string that contain the central
+        word in the right and context word on the left, this words are separed by
+        "<>" character.
+    sample_rate: float
+        To take a sample from the vocabulary list.
+    central : bool, optional
+        Especificate filter in terms of central or context words.
+        The default is True.
+
+    Returns
+    -------
+    Dict[str, int]
+        co_occurrency for filter words, central or context.
+
+    """
+    n_samples = int(len(vocabulary) * sample_rate)
+    sample = random.choices(vocabulary, k=n_samples)
+    if central is True:
+        sample_dict = {
+            choice: co_occurrences[choice]
+            for choice in co_occurrences.keys()
+            if choice.split("<>")[0] in sample
+        }
+    else:
+        sample_dict = {
+            choice: co_occurrences[choice]
+            for choice in co_occurrences.keys()
+            if choice.split("<>")[1] in sample
+        }
+
+    return sample_dict
