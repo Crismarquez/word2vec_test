@@ -12,7 +12,6 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
-import utils.util
 import glove.cost_function
 import glove.gradient
 
@@ -66,16 +65,7 @@ plt.ylabel("Cost")
 plt.show()
 
 # save data
-dimension = len(theta) // 2 // len(vocabulary)
 
-data_context = {}
-for context_word in vocabulary:
-    context_index = vocabulary.index(context_word)
-    context_vector = utils.util.find_vector(
-        context_index, theta, dimension, central=False
-    )
-    data_context[context_word] = list(context_vector)
-
-file_path = os.path.join(base, "glove_contex.json")
-with open(file_path, "w") as fp:
-    json.dump(data_context, fp)
+# file_path = os.path.join(base, "glove_contex.json")
+# with open(file_path, "w") as fp:
+#     json.dump(data_context, fp)

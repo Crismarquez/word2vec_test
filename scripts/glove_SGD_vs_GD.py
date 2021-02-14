@@ -37,7 +37,7 @@ hist_cost_SGD = [
 ]
 minutes_SGD = [0]
 acum = 0
-for i in range(30):
+for i in range(50):
     print(f"Iteration n°: {i}")
     inicio = time.time()
     gradient_SGD = glove.gradient.stochastic_gradient_descent(
@@ -48,10 +48,11 @@ for i in range(30):
 
     theta_SGD = theta_SGD - learning_rate * gradient_SGD
 
-    cost_model = glove.cost_function.cost_glove_dict(
-        vocabulary, theta_SGD, co_occurrence
-    )
-    hist_cost_SGD.append(cost_model)
+    if i % 3 == 0:
+        cost_model = glove.cost_function.cost_glove_dict(
+            vocabulary, theta_SGD, co_occurrence
+        )
+        hist_cost_SGD.append(cost_model)
 
 
 learning_rate = 0.0008
@@ -72,16 +73,20 @@ for i in range(12):
 
     theta_GD = theta_GD - learning_rate * gradient_GD
 
-    cost_model = glove.cost_function.cost_glove_dict(
-        vocabulary, theta_GD, co_occurrence
-    )
-    hist_cost_GD.append(cost_model)
+    if i % 3 == 0:
+        cost_model = glove.cost_function.cost_glove_dict(
+            vocabulary, theta_GD, co_occurrence
+        )
+        hist_cost_GD.append(cost_model)
 
-plt.plot(minutes_SGD, hist_cost_SGD, label="SGD")
-plt.plot(minutes_GD, hist_cost_GD, label="GD")
+plt.plot(range(len(hist_cost_SGD)), hist_cost_SGD, label="SGD")
+plt.plot(range(len(hist_cost_GD)), hist_cost_GD, label="GD")
 plt.title("Learning - SGD vs GD")
 plt.xlabel("Minutes")
 plt.ylabel("Cost")
 plt.legend()
 plt.savefig("SGD_GD.png")
 plt.show()
+
+print(minutes_GD[-1])
+print(minutes_SGD[-1])

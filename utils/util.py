@@ -190,3 +190,98 @@ def random_dict(
         }
 
     return sample_dict
+
+
+def get_glove_vectors(
+    vocabulary: List[str], theta: np.ndarray, central: bool = False
+) -> Dict[str, list]:
+    """
+    Organize the word vector representation in a dictionary.
+
+    Parameters
+    ----------
+    vocabulary : list
+        list of unique words in the corpus.
+    theta : numpy.ndarray
+        Array that contains the vector representation of words.
+    central : bool, optional
+        Especificate filter in terms of central or context words.
+        The default is False. it means the default return the context words.
+
+    Returns
+    -------
+    Dict[str, list]
+        Dictionary that the key is the word and the value is the vector representation.
+
+    """
+
+    dimension = len(theta) // 2 // len(vocabulary)
+    data = {}
+    for word in vocabulary:
+        word_index = vocabulary.index(word)
+        word_vector = find_vector(word_index, theta, dimension, central=central)
+        data[word] = list(word_vector)
+
+    return data
+
+
+def get_labels(word_label: Dict[str, str]) -> List[str]:
+    """
+    Obtain the labels related in the model.
+
+    Parameters
+    ----------
+    word_label : Dict[str, str]
+        Dictionary that contain the classification of words, the key represent
+        the word and the value is the label or topic.
+
+    Returns
+    -------
+    List[str]
+        This list contain all posible labels in the model given.
+
+    """
+
+    return list(set(word_label.values()))
+
+
+def gen_theta_class_words(labels: List[str], dimension: int) -> Dict[str, np.ndarray]:
+    """
+    Create initial parameters theta, represent the weights for model the labels.
+
+    Parameters
+    ----------
+    labels : List[str]
+        This list contain all posible labels in the model given.
+    dimension : int
+        Size of dimension that will have each vector of weights.
+
+    Returns
+    -------
+    label_vector = Dict[str, np.ndarray]
+        Dictionary where the key represent the label and tha value represents the
+        vector of weights.
+    """
+
+    return {label: np.random.uniform(-1, 1, dimension) for label in labels}
+
+
+def gen_grandient(theta: Dict[str, np.ndarray]) -> Dict[str, int]:
+    """
+    Generate the dictionary in order to save the futures values for the gradient,
+    useful to avoid check if the key exist when the gradient is updating.
+
+    Parameters
+    ----------
+    theta : Dict[str, np.ndarray]
+        Dictionary where the key represent the label and tha value represents the
+        vector of weights.
+
+    Returns
+    -------
+    Dict[str, int]
+        DESCRIPTION.
+
+    """
+
+    return {label: 0 for label in theta.keys()}
